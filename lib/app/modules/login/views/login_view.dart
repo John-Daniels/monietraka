@@ -7,7 +7,9 @@ import 'package:monietracka/app/shared/widgets/app_text.dart';
 import 'package:monietracka/app/shared/widgets/spacing.dart';
 import 'package:monietracka/app/theme/colors.dart';
 
+import '../../../routes/app_pages.dart';
 import '../../../shared/widgets/app_input.dart';
+import '../../../utils/form_validator.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -28,21 +30,37 @@ class LoginView extends GetView<LoginController> {
           child: Form(
             child: Column(
               children: [
-                const AppInput(
+                AppInput(
                   label: 'Email',
                   hint: "Enter your email address",
+                  validator: (email) {
+                    return FormValidator.isValidEmail(email);
+                  },
                 ),
                 vSpace(20),
-                const AppInput(
-                  label: 'Password',
-                  hint: "Enter your password",
-                  isPassword: true,
-                  suffixIcon: Icon(Icons.visibility),
-                ),
+                Obx(() => AppInput(
+                    label: 'Password',
+                    hint: "Enter your password",
+                    isPassword: !controller.isPwdVisible.value,
+                    validator: (password) {
+                      return FormValidator.isValidPassword(password);
+                    },
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        !controller.isPwdVisible.value
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        controller.isPwdVisible.toggle();
+                      },
+                    ))),
                 vSpace(50),
                 AppButton(
                   label: 'Log In',
-                  onTap: () {},
+                  onTap: () {
+                    Get.offAllNamed(Routes.HOME);
+                  },
                 ),
                 vSpace(30),
                 AppText(

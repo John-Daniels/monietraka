@@ -26,9 +26,10 @@ class CreateAccountView extends GetView<CreateAccountController> {
         ),
       ),
       body: Padding(
-          padding: simpad(20, 20),
-          child: Form(
-            child: Column(
+        padding: simpad(20, 20),
+        child: Form(
+          child: Obx(
+            () => Column(
               children: [
                 const AppInput(
                   label: 'Username',
@@ -56,23 +57,49 @@ class CreateAccountView extends GetView<CreateAccountController> {
                 AppInput(
                   label: 'Enter Password',
                   hint: "Enter your password",
-                  isPassword: true,
-                  suffixIcon: Icon(Icons.visibility),
+                  isPassword: !controller.isPwdVisible.value,
+                  controller: controller.pwdController,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      !controller.isPwdVisible.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      controller.isPwdVisible.toggle();
+                    },
+                  ),
                   validator: (pwd) {
                     return FormValidator.isValidPassword(pwd);
                   },
                 ),
                 vSpace(20),
-                const AppInput(
+                AppInput(
                   label: 'Confirm Password',
                   hint: "Re-enter your password",
-                  isPassword: true,
-                  suffixIcon: Icon(Icons.visibility),
+                  isPassword: !controller.isPwdConfirmVisible.value,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      !controller.isPwdConfirmVisible.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      controller.isPwdConfirmVisible.toggle();
+                    },
+                  ),
+                  validator: (pwd) {
+                    if (pwd != controller.pwdController.text) {
+                      return 'Passwords do not match';
+                    }
+                  },
                 ),
                 vSpace(50),
                 AppButton(
                   label: 'Create Account',
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(Routes.HOME);
+                  },
                 ),
                 vSpace(30),
                 Row(
@@ -81,7 +108,7 @@ class CreateAccountView extends GetView<CreateAccountController> {
                     const Text('Already have an account?'),
                     TextButton(
                       onPressed: () {
-                        Get.toNamed(Routes.LOGIN);
+                        Get.offAllNamed(Routes.LOGIN);
                       },
                       child: AppText(
                         'Log In',
@@ -92,7 +119,9 @@ class CreateAccountView extends GetView<CreateAccountController> {
                 ),
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

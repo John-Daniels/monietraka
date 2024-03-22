@@ -1,13 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CreateAccountController extends GetxController {
-  
-
+class HomeController extends GetxController {
   final count = 0.obs;
-  RxBool isPwdVisible = false.obs;
-  RxBool isPwdConfirmVisible = false.obs;
-  TextEditingController pwdController = TextEditingController();
+  RxBool hideBalance = false.obs;
   @override
   void onInit() {
     super.onInit();

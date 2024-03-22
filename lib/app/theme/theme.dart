@@ -5,6 +5,7 @@ class AppTheme {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFFAA713),
         ),
+        scaffoldBackgroundColor: const Color(0xFFFAFAFA),
         useMaterial3: true,
       );
 }
